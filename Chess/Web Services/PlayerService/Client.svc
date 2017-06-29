@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Chess.Web_Services.PlayerService.IClientContract" CodeBehind="Client.svc.cs" %>

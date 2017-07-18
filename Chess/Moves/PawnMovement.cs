@@ -98,7 +98,15 @@ namespace Chess.Moves
                 if (pawnToEat != null)
                 {
                     Formation.Pieces.Remove(pawnToEat);
-                    Formation.DeadPieces.Add(pawnToEat);
+                    if (!pawnToEat.IsBlack)
+                    {
+                        Formation.WhiteDeadPieces.Add(pawnToEat);
+
+                    }
+                    else{
+                        Formation.BlackDeadPieces.Add(pawnToEat);
+
+                    }
                     return true;
                 }
             }
@@ -137,7 +145,15 @@ namespace Chess.Moves
                 if(pawnToEat != null)
                 {    
                     Formation.Pieces.Remove(pawnToEat);
-                    Formation.DeadPieces.Add(pawnToEat);
+                    if (!pawnToEat.IsBlack)
+                    {
+                        Formation.WhiteDeadPieces.Add(pawnToEat);
+
+                    }
+                    else{
+                        Formation.BlackDeadPieces.Add(pawnToEat);
+
+                    }
                     return true;                       
                 }
             }

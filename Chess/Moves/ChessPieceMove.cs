@@ -3,7 +3,7 @@ using Chess.Pieces;
 
 namespace Chess.Moves
 {
-    public class ChessPieceMove : NotifyPropertyChangedViewModel
+    public class ChessPieceMove
     {
         public static bool SwapPlayer = false;
 

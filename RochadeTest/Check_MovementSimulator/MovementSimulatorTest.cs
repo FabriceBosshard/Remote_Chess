@@ -46,11 +46,7 @@ namespace Unittests.Check_MovementSimulator
         [TestCase(2, 1, 7, 1, true)]
         public void Test_For_imaginary_move(int sourceRow, int sourceColumn,int targetRow, int targetColumn,bool result)
         {            
-            Field targetField = new Field()
-            {
-                Column = targetColumn,
-                Row = targetRow
-            };
+            Field targetField = new Field(targetRow,targetColumn);
 
             ChessPieceViewModel piece = new Queen() {Column = sourceColumn,Row = sourceRow};
             Formation.Pieces.Add(piece);
@@ -67,11 +63,8 @@ namespace Unittests.Check_MovementSimulator
         {
             ChessPieceViewModel piece = new Queen() {Column = 4,Row = 4};
 
-            Field targetField = new Field()
-            {
-                Column = targetColumn,
-                Row = targetRow
-            };
+            Field targetField = new Field(targetRow,targetColumn);
+
             Formation.Pieces.Add(piece);
             unitundertest = new MoveSimulator(piece, targetField);
             var x = unitundertest._tempPiece;

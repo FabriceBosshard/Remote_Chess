@@ -18,9 +18,5 @@ namespace Chess.Pieces
             Row = row;
             Column = col;
         }
-
-        public Field()
-        {
-        }
     }
 }

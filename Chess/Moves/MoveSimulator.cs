@@ -95,11 +95,8 @@ namespace Chess.Moves
 
         public bool IsCheck()
         {
-            Field targetField = new Field()
-            {
-                Row = _kingUnderCheckTest.Row,
-                Column = _kingUnderCheckTest.Column
-            };
+            Field targetField = new Field(_kingUnderCheckTest.Row, _kingUnderCheckTest.Column);
+           
 
             return IsKingInMovementPatternOfAny(targetField);
         }
@@ -142,14 +139,10 @@ namespace Chess.Moves
                     {
                         if (_kingUnderCheckTest.IsBlack == piece.IsBlack)
                         {
-                            Field field = new Field()
-                            {
-                                Row = i,
-                                Column = j
-                            };
+                            Field field = new Field(i, j);
 
                             if (piece.TryMoveWithoutStateEffection(field,_tempList))
-                            {                                
+                            {                                                              
                                 return false;
                             }
                         }

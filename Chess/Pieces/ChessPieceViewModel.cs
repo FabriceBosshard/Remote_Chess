@@ -12,6 +12,7 @@ namespace Chess.Pieces
         public abstract string ImageSource { get; }
 
         public ChessPieceEnum Type { get; set; }
+        
 
         protected string Id { get; private set; }
 
@@ -19,6 +20,7 @@ namespace Chess.Pieces
         {
             Id = Guid.NewGuid().ToString();
         }
+
 
        public void UpdateChessPieceViewModel(ChessPiece piece)
         {
@@ -77,12 +79,12 @@ namespace Chess.Pieces
             return new ChessPiece
             {
                 Id = Id,
-                Column = Column,
+                Row = Row,
+                Column = Column,               
                 FirstMove = FirstMove,
                 IsBlack = IsBlack,
                 IsEnPassantEnabled = IsEnPassantEnabled,
-                IsSelected = IsSelected,
-                Row = Row,
+                IsSelected = IsSelected,               
                 Type = Type.ToString()
             };
         }
@@ -102,7 +104,7 @@ namespace Chess.Pieces
             }
             else
             {
-                Chessboard.Main.CheckLabel.Content = "Your move is not allowed (Tip: Wrong movementpattern | Is check after move)";
+                Chessboard.Main.MSGLabel.Content = "Your move is not allowed (Tip: Wrong movementpattern | Is check after move)";
             }
         }
 
@@ -140,8 +142,22 @@ namespace Chess.Pieces
 
         protected virtual void Move(Field target)
         {
+            if (Type != ChessPieceEnum.King)
+            {
+                new PushToStack(target, this.Column, this.Row, this);
+            }
             Column = target.Column;
             Row = target.Row;
+
+            if (Chessboard.oldState!=null)
+            {
+                new History(true);
+            }
+            Chessboard.oldState = new History().cloneGameState();
+            Chessboard.oldFieldDiff = new History().cloneDiffs();
+            Chessboard.oldwhiteDeadPieces = new History().cloneWhite();
+            Chessboard.oldBlackDeadPieces = new History().cloneBlack();
+
 
             ChessPieceMove.SwapPlayer = true;
             if (!FirstMove && ChessPieceMove.SwapPlayer)
@@ -152,6 +168,7 @@ namespace Chess.Pieces
                 }
             }
             FirstMove = false;
+            
         }
 
         public void TryConsumeAtTargetField(Field target)
@@ -163,7 +180,14 @@ namespace Chess.Pieces
                     //Check if it is same color
                     if (b.IsBlack != IsBlack)
                     {
-                        Formation.DeadPieces.Add(b);
+                        if (IsBlack)
+                        {
+                            Formation.WhiteDeadPieces.Add(b);
+
+                        }
+                        else{
+                            Formation.BlackDeadPieces.Add(b);
+                        }
                         Formation.Pieces.Remove(b);
                         Move(target);
                         break;

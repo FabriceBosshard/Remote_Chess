@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Chess"
         xmlns:pieces="clr-namespace:Chess.Pieces"
-        Title="Chess" Height="780" Width="1240">
+        Title="Chess" Height="780" Width="1430">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type pieces:ChessPieceViewModel}">
@@ -13,10 +13,11 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="125"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="650"/>
             <ColumnDefinition Width="340"/>
-            <ColumnDefinition Width="125"/>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -150,16 +151,37 @@
         </StackPanel>
         <Label x:Name="GameID" Content="" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="26"/>
 
-        <UniformGrid  Grid.Column="2" Margin="10,50,1.8,321.4" Grid.RowSpan="3" Background="White" Opacity="0.5">
+        <UniformGrid  Grid.Column="2" Margin="9.6,50,2.2,9.8" Grid.RowSpan="2" Background="White" Opacity="0.5">
             <UniformGrid.Effect>
                 <DropShadowEffect Color="Black" Direction="-90" RenderingBias="Quality" ShadowDepth="1" BlurRadius="40" Opacity="0.5"/>
             </UniformGrid.Effect>
         </UniformGrid>
 
-        <ItemsControl ItemsSource="{Binding}" Name="DeadPieceControl" Grid.Column="2" Margin="10,50,1.8,321.4" Grid.RowSpan="3">
+        <ItemsControl ItemsSource="{Binding}" Name="BlackDeadPieceControl" Grid.Column="2" Margin="9.6,50,2.2,9.8" Grid.RowSpan="2">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid IsItemsHost="True" x:Name="DeadPieceControlGrid" PreviewMouseLeftButtonDown="OnPreviewMouseLeftButtonDown" Rows="5" Columns="6" >
+                    <UniformGrid IsItemsHost="True" x:Name="BlackDeadPieceControlGrid" PreviewMouseLeftButtonDown="OnPreviewMouseLeftButtonDown" Rows="5" Columns="6" >
+
+                    </UniformGrid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Grid.Row" Value="{Binding Row}"/>
+                    <Setter Property="Grid.Column" Value="{Binding Column}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+
+        <UniformGrid  Grid.Column="2" Margin="9.6,0.2,2.2,0.4" Background="White" Opacity="0.5" Grid.Row="2">
+            <UniformGrid.Effect>
+                <DropShadowEffect Color="Black" Direction="-90" RenderingBias="Quality" ShadowDepth="1" BlurRadius="40" Opacity="0.5"/>
+            </UniformGrid.Effect>
+        </UniformGrid>
+        <ItemsControl ItemsSource="{Binding}" Name="WhiteDeadPieceControl" Grid.Column="2" Margin="9.6,0.2,2.2,0.4" Grid.Row="2">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid IsItemsHost="True" x:Name="WhiteDeadPieceControlGrid" PreviewMouseLeftButtonDown="OnPreviewMouseLeftButtonDown" Rows="5" Columns="6" >
 
                     </UniformGrid>
                 </ItemsPanelTemplate>
@@ -172,5 +194,13 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
         <Label x:Name="CheckLabel" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="215.2,10,0,0" VerticalAlignment="Top" Height="26" Width="434" Background="#00000000" Foreground="Red"/>
+        <Label x:Name="MSGLabel" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="4.6,10,0,0" VerticalAlignment="Top" Height="26" Width="434" Background="#00000000" Foreground="Red" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="listBox" ItemsSource="{Binding}" Grid.Column="3" Opacity="0.5" HorizontalAlignment="Left" Height="321" Margin="9.6,50,2.8,9.8" VerticalAlignment="Top" Width="320" Grid.RowSpan="2">
+            <ListBox.Effect>
+                <DropShadowEffect Color="Black" Direction="-90" RenderingBias="Quality" ShadowDepth="1" BlurRadius="40" Opacity="0.5"/>
+            </ListBox.Effect>
+        </ListBox>
+        <Button x:Name="undo" Focusable="False" IsEnabled="False" Content="Fuck UNDO" Grid.Column="3" HorizontalAlignment="Left" Margin="9.6,10.2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="undo_Click"/>
+
     </Grid>
 </Window>

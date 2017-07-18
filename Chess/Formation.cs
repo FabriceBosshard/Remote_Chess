@@ -7,9 +7,10 @@ namespace Chess
     public class Formation
     {
         public static ObservableCollection<ChessPieceViewModel> Pieces = new ObservableCollection<ChessPieceViewModel>();
-        public static ObservableCollection<ChessPieceViewModel> DeadPieces = new ObservableCollection<ChessPieceViewModel>();
+        public static ObservableCollection<ChessPieceViewModel> BlackDeadPieces = new ObservableCollection<ChessPieceViewModel>();
+        public static ObservableCollection<ChessPieceViewModel> WhiteDeadPieces = new ObservableCollection<ChessPieceViewModel>();
 
-       private static void NewFormation()
+        private static void NewFormation()
         {              
             Pieces.Clear();
             Pieces.Add(new Rook() { Row = 0, Column = 0, IsBlack = true });

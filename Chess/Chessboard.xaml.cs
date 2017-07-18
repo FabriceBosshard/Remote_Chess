@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -23,21 +24,32 @@ namespace Chess
         private const string WhiteTurnMsg = "White is at turn";
         private const string BlackTurnMsg = "Black is at turn";
         private int _gameId = Int32.MaxValue;
-        private Player _activePlayer;
+        public static Player _activePlayer;
         private Player _player1;
         private readonly Player _player2;
         private Client _client;
         private DispatcherTimer _t;
         private GameState _state;
+        public static ObservableCollection<string> stackMsg = new ObservableCollection<string>();
+        public static ObservableCollection<ChessPieceViewModel> oldState = null;
+        public static ObservableCollection<ChessPieceViewModel> oldwhiteDeadPieces= null;
+        public static ObservableCollection<ChessPieceViewModel> oldBlackDeadPieces = null;
+        public static ObservableCollection<string> oldFieldDiff = null;
+
 
         public static Chessboard Main;
+
 
         public Chessboard()
         {
             Initialize();
             Fr = new Formation();
             DataContext = Formation.Pieces;
-            DeadPieceControl.DataContext = Formation.DeadPieces;
+            BlackDeadPieceControl.DataContext = Formation.BlackDeadPieces;
+            WhiteDeadPieceControl.DataContext = Formation.WhiteDeadPieces;          
+            listBox.DataContext = stackMsg;
+            
+
             SetMain();
             if (MainWindow.Remote)
             {
@@ -52,6 +64,10 @@ namespace Chess
                 Label.Content = WhiteTurnMsg;
                 Square.Background = Brushes.Gray;
             }
+            oldState = new History().cloneGameState();
+            oldFieldDiff = new History().cloneDiffs();
+            oldwhiteDeadPieces = new History().cloneWhite();
+            oldBlackDeadPieces = new History().cloneBlack();
         }
 
         public void SetMain()
@@ -125,6 +141,7 @@ namespace Chess
                 UpdateChessPieces(_state.Pieces.ToList());
                 UpdatePlayer(_state);
                 CheckLabel.Content = !new MoveSimulator(_activePlayer).IsCheck() ? "Check!" : "";
+                MSGLabel.Content = "";
             }
         }
 
@@ -201,11 +218,8 @@ namespace Chess
                 }
                 if (piece.IsSelected && (piece.IsBlack == _activePlayer.IsBlack))
                 {
-                    Field targetField = new Field
-                    {
-                        Column = col,
-                        Row = row
-                    };
+                    Field targetField = new Field(row, col);
+                    
                     PrepForNextRound(piece, targetField);
                     break;
                 }
@@ -268,7 +282,7 @@ namespace Chess
         }
 
         public void SwapPlayer()
-        {
+        {           
             ChangeActivePlayer();
 
             if (MainWindow.Remote)
@@ -285,15 +299,24 @@ namespace Chess
             }
             else if (IsKingInPatt())
             {
-                showGameOverScreen();
+                showDrawOverScreen();
             }
+            MSGLabel.Content = "";
+        }
+
+        private void showDrawOverScreen()
+        {
+            var Do = new DrawPage(this);
+            Do.Show();
         }
 
         private bool IsKingInPatt()
         {
             if (new MoveSimulator(_activePlayer).IsCheckmate())
             {
-                CheckLabel.Content = "Player " + (_activePlayer.IsBlack ? "Black" : "White") + " is Patt!";
+                string msg = "Player " + (_activePlayer.IsBlack ? "Black" : "White") + " is Patt!";
+                CheckLabel.Content = msg;
+                new PushToStack(msg);
                 return true;
             }
             return false;
@@ -317,7 +340,9 @@ namespace Chess
         {
             if (new MoveSimulator(_activePlayer).IsCheckmate())
             {
-                CheckLabel.Content = "Player " + (_activePlayer.IsBlack ? "Black" : "White") + " is Checkmate!";
+                string msg = "Player " + (_activePlayer.IsBlack ? "Black" : "White") + " is Checkmate!";
+                CheckLabel.Content = msg;
+                new PushToStack(msg);
                 return true;
             }
             return false;
@@ -327,7 +352,9 @@ namespace Chess
         {
             if (new MoveSimulator(_activePlayer).IsCheck())
             {
-                CheckLabel.Content = "Player " + (_activePlayer.IsBlack ? "Black" : "White") + " is in Check!";
+                string msg = "Player " + (_activePlayer.IsBlack ? "Black" : "White") + " is in Check!";
+                CheckLabel.Content = msg;
+                new PushToStack(msg);
                 return true;
             }
             return false;
@@ -352,6 +379,76 @@ namespace Chess
                 {
                     Square.Background = _player1.IsBlack ? Brushes.White : Brushes.Black;
                 }
+            }
+        }
+
+        private void undo_Click(object sender, RoutedEventArgs e)
+        {
+            replacePieces();
+            replaceFieldDiffs();
+            replaceDeadWhite();
+            replaceDeadBlack();
+
+            SwapPlayer();
+
+        }
+
+        private void replaceDeadWhite()
+        {
+            ObservableCollection<ChessPieceViewModel> temp = History.whiteDead.Pop();
+            Formation.WhiteDeadPieces.Clear();
+            foreach (ChessPieceViewModel chesspiece in temp)
+            {
+                Formation.WhiteDeadPieces.Add(new ChessPieceFactory().Create(chesspiece.ToDataContract()));
+            }
+            if (History.whiteDead.Count == 0)
+            {
+                undo.IsEnabled = false;
+                oldwhiteDeadPieces = new History().cloneWhite();
+            }
+        }
+
+        private void replaceDeadBlack()
+        {
+            ObservableCollection<ChessPieceViewModel> temp = History.blackDead.Pop();
+            Formation.BlackDeadPieces.Clear();
+            foreach (ChessPieceViewModel chesspiece in temp)
+            {
+                Formation.BlackDeadPieces.Add(new ChessPieceFactory().Create(chesspiece.ToDataContract()));
+            }
+            if (History.blackDead.Count == 0)
+            {
+                undo.IsEnabled = false;
+                oldBlackDeadPieces = new History().cloneBlack();
+            }
+        }
+
+        private void replaceFieldDiffs()
+        {
+            ObservableCollection<string> temp = History.FieldDiffs.Pop();
+            stackMsg.Clear();
+            foreach (string s in temp)
+            {
+                stackMsg.Add(s);
+            }
+            if (stackMsg.Count==0)
+            {
+                oldFieldDiff = new History().cloneDiffs();
+            }
+        }
+
+        private void replacePieces()
+        {
+            ObservableCollection<ChessPieceViewModel> temp = History.GameStates.Pop();
+            Formation.Pieces.Clear();
+            foreach (ChessPieceViewModel chesspiece in temp)
+            {
+                Formation.Pieces.Add(new ChessPieceFactory().Create(chesspiece.ToDataContract()));
+            }
+            if (History.GameStates.Count == 0)
+            {
+                undo.IsEnabled = false;
+                oldState = new History().cloneGameState();
             }
         }
     }

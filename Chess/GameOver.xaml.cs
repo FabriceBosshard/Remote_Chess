@@ -23,7 +23,7 @@ namespace Chess
 
         private void getWinPlayer(string msg)
         {
-            playerWins.Content = "Player " + msg + " has won";
+            playerWins.Content = "Player " + msg + " has won!";
             this.KeyDown += Exit;
             
 

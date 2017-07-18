@@ -63,10 +63,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BoolToBlackWhiteConverter.cs" />
+    <Compile Include="DrawPage.xaml.cs">
+      <DependentUpon>DrawPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Factory\ChessPieceFactory.cs" />
     <Compile Include="GameOver.xaml.cs">
       <DependentUpon>GameOver.xaml</DependentUpon>
     </Compile>
+    <Compile Include="History.cs" />
     <Compile Include="Moves\BishopMovement.cs" />
     <Compile Include="Moves\KingMovement.cs" />
     <Compile Include="Moves\KnightMovement.cs" />
@@ -100,12 +104,17 @@
     <Compile Include="Pieces\Pawn.cs" />
     <Compile Include="Pieces\Queen.cs" />
     <Compile Include="Pieces\Rook.cs" />
+    <Compile Include="PushToStack.cs" />
     <Compile Include="Web Services\PlayerService\Client.svc.cs">
       <DependentUpon>Client.svc</DependentUpon>
     </Compile>
     <Compile Include="Web Services\PlayerService\IClientContract.cs" />
     <Compile Include="Web Services\PlayerService\Tests.cs" />
     <Page Include="Chessboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DrawPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

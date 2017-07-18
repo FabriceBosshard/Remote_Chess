@@ -95,7 +95,7 @@ namespace Chess.Moves
 
         private bool IsFieldARochadeField(Field targetField)
         {
-            return targetField.Column == 0 || targetField.Column == 7;
+            return targetField.Row == 0 || targetField.Row == 7;
         }
 
         private bool TryRookFirstMove(Field targetField)
@@ -163,14 +163,14 @@ namespace Chess.Moves
             {
                 for (int i = targetColumn; i > currentColumn; i--)
                 {
-                    fieldList.Add(new Field() { Column = i, Row = _king.Row });
+                    fieldList.Add(new Field(_king.Row,i));
                 }
             }
             else
             {
                 for (int i = targetColumn; i < currentColumn; i++)
                 {
-                    fieldList.Add(new Field() { Column = i, Row = _king.Row });
+                    fieldList.Add(new Field( _king.Row,i ));
                 }
             }
 

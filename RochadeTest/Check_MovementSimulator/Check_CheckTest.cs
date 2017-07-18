@@ -60,14 +60,14 @@ namespace Unittests.Check_MovementSimulator
             {
                 for (int i = targetColumn; i > currentColumn; i--)
                 {
-                    fields.Add(new Field() { Column = i, Row = unitUnderTest.Row });
+                    fields.Add(new Field(unitUnderTest.Row,i));
                 }
             }
             else
             {
                 for (int i = targetColumn; i < currentColumn; i++)
                 {
-                    fields.Add(new Field() { Column = i, Row = unitUnderTest.Row });
+                    fields.Add(new Field(unitUnderTest.Row, i));
                 }
             }
 
@@ -141,11 +141,7 @@ namespace Unittests.Check_MovementSimulator
                 IsBlack = false,
                 Type = ChessPieceEnum.Bishop
             });
-            Field targetField = new Field()
-            {
-                Column = targetColumn,
-                Row = targetRow
-            };
+            Field targetField = new Field(targetRow,targetColumn);
 
             Assert.That(new MoveSimulator(a,targetField).IsCheck,Is.EqualTo(result));
         }

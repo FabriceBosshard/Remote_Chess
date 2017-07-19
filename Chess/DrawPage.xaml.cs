@@ -28,6 +28,8 @@ namespace Chess
             ResizeMode = ResizeMode.NoResize;
             InitializeComponent();
             setText();
+            Chessboard.Main.undo.IsEnabled = false;
+
         }
 
         private void setText()
@@ -42,6 +44,7 @@ namespace Chess
             newGame.Show();
             this.Close();
             chessboardInstance.Close();
+
         }
     }
 }

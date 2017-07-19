@@ -18,7 +18,8 @@ namespace Chess
             ResizeMode = ResizeMode.NoResize;
             InitializeComponent();
             getWinPlayer(msg);
-            
+            Chessboard.Main.undo.IsEnabled = false;
+
         }
 
         private void getWinPlayer(string msg)
@@ -33,8 +34,8 @@ namespace Chess
         {
             MainWindow newGame = new MainWindow();
             newGame.Show();
-            this.Close();
-            chessboardInstance.Close();
+            this.Close(); 
+            chessboardInstance.Close();           
         }
     }
 }

@@ -31,8 +31,10 @@ namespace Chess
 
         private void Exit(object sender, KeyEventArgs e)
         {
-           this.Close();
-           chessboardInstance.Close();
+            MainWindow newGame = new MainWindow();
+            newGame.Show();
+            this.Close();
+            chessboardInstance.Close();
         }
     }
 }

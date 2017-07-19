@@ -38,6 +38,8 @@ namespace Chess
 
         private void Exit(object sender, KeyEventArgs e)
         {
+            MainWindow newGame = new MainWindow();
+            newGame.Show();
             this.Close();
             chessboardInstance.Close();
         }

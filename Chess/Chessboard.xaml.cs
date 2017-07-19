@@ -31,10 +31,10 @@ namespace Chess
         private DispatcherTimer _t;
         private GameState _state;
         public static ObservableCollection<string> stackMsg = new ObservableCollection<string>();
-        public static ObservableCollection<ChessPieceViewModel> oldState = null;
-        public static ObservableCollection<ChessPieceViewModel> oldwhiteDeadPieces= null;
-        public static ObservableCollection<ChessPieceViewModel> oldBlackDeadPieces = null;
-        public static ObservableCollection<string> oldFieldDiff = null;
+        public static ObservableCollection<ChessPieceViewModel> oldState = new ObservableCollection<ChessPieceViewModel>();
+        public static ObservableCollection<ChessPieceViewModel> oldwhiteDeadPieces= new ObservableCollection<ChessPieceViewModel>();
+        public static ObservableCollection<ChessPieceViewModel> oldBlackDeadPieces = new ObservableCollection<ChessPieceViewModel>();
+        public static ObservableCollection<string> oldFieldDiff = new ObservableCollection<string>();
 
 
         public static Chessboard Main;
@@ -450,6 +450,23 @@ namespace Chess
                 undo.IsEnabled = false;
                 oldState = new History().cloneGameState();
             }
+        }
+
+        private void undo_Copy1_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void undo_Copy2_Click(object sender, RoutedEventArgs e)
+        {
+            Help h = new Help();
+            h.Show();
+        }
+
+        private void undo_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            About a = new About();
+            a.Show();
         }
     }
 }

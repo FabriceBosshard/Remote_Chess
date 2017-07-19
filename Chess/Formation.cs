@@ -13,6 +13,18 @@ namespace Chess
         private static void NewFormation()
         {              
             Pieces.Clear();
+            BlackDeadPieces.Clear();
+            WhiteDeadPieces.Clear();
+            Chessboard.stackMsg.Clear();
+            Chessboard.oldBlackDeadPieces.Clear();
+            Chessboard.oldFieldDiff.Clear();
+            Chessboard.oldwhiteDeadPieces.Clear();
+            Chessboard.oldState.Clear();
+            History.GameStates.Clear();
+            History.FieldDiffs.Clear();
+            History.blackDead.Clear();
+            History.whiteDead.Clear();
+
             Pieces.Add(new Rook() { Row = 0, Column = 0, IsBlack = true });
             Pieces.Add(new Knight() { Row = 0, Column = 1, IsBlack = true });
             Pieces.Add(new Bishop() { Row = 0, Column = 2, IsBlack = true });

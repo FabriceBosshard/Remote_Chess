@@ -19,14 +19,14 @@ namespace Chess
             InitializeComponent();
             getWinPlayer(msg);
             Chessboard.Main.undo.IsEnabled = false;
+            Chessboard.Main.undo_Copy1.IsEnabled = false;
 
         }
 
         private void getWinPlayer(string msg)
         {
             playerWins.Content = "Player " + msg + " has won!";
-            this.KeyDown += Exit;
-            
+            this.KeyDown += Exit;            
 
         }
 

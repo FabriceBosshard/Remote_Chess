@@ -29,6 +29,7 @@ namespace Chess
             InitializeComponent();
             setText();
             Chessboard.Main.undo.IsEnabled = false;
+            Chessboard.Main.undo_Copy1.IsEnabled = false;
 
         }
 

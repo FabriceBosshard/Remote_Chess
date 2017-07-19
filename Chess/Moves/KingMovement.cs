@@ -95,7 +95,7 @@ namespace Chess.Moves
 
         private bool IsFieldARochadeField(Field targetField)
         {
-            return targetField.Row == 0 || targetField.Row == 7;
+            return targetField.Row == 0 && targetField.Column == 2|| targetField.Row == 0 && targetField.Column == 6 || targetField.Row == 7 && targetField.Column == 6 || targetField.Row == 7 && targetField.Column == 2;
         }
 
         private bool TryRookFirstMove(Field targetField)
